@@ -25,6 +25,11 @@ a:visited {
 	color: rgb(0,80,160);
 }
 
+table, th, td {
+	border-bottom: 1px solid black;
+	border-collapse: collapse;
+}
+
 label {
 	display: block;
 }
