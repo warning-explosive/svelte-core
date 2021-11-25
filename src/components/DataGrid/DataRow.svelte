@@ -1,9 +1,10 @@
 <script lang="ts">
     import DataCell from "./DataCell.svelte";
+    import type {Containers} from "../../scripts/containers";
 
     export let isHeader: boolean = false;
     export let keys: string[];
-    export let containers: {};
+    export let containers: { [index: string]: Containers };
 </script>
 
 <tr>
