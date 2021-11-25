@@ -1,4 +1,5 @@
 <script lang="ts">
+    import {createEventDispatcher} from "svelte";
     import FormLayout from "./FormLayout.svelte";
     import {FormLayoutNode} from "../../scripts/form";
 
@@ -6,11 +7,12 @@
     export let item: object;
     export let layout: FormLayoutNode;
 
-    const submit = () => { console.log(JSON.stringify(item)) };
+    const dispatch = createEventDispatcher();
+    const onSubmit = () => dispatch('submit', item);
 </script>
 
 <section>
-    <form on:submit|preventDefault={submit}>
+    <form on:submit|preventDefault={onSubmit}>
         <FormLayout {...layout} readonly={readonly} bind:item={item} />
         <input type="submit" />
     </form>

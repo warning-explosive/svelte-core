@@ -42,26 +42,21 @@
         direction: 'horizontal',
         children: [
             {
-                direction: "vertical",
+                direction: "horizontal",
                 children: [
-                    { key: 'string_field' },
                     {
-                        direction: "horizontal",
+                        direction: "vertical",
                         children: [
-                            {
-                                direction: "vertical",
-                                children: [
-                                    { key: 'number_field' },
-                                    { key: 'boolean_field' }
-                                ]
-                            },
-                            {
-                                direction: "vertical",
-                                children: [
-                                    { key: 'money_field' },
-                                    { key: 'link_field' }
-                                ]
-                            }
+                            { key: 'string_field' },
+                            { key: 'number_field' },
+                            { key: 'boolean_field' }
+                        ]
+                    },
+                    {
+                        direction: "vertical",
+                        children: [
+                            { key: 'money_field' },
+                            { key: 'link_field' }
                         ]
                     }
                 ]
@@ -71,6 +66,7 @@
     };
 
     $: console.log(item);
+    const onSubmit = e => console.log(JSON.stringify(e.detail));
 </script>
 
 <b>Welcome to svelte-data-grid!</b>
@@ -83,7 +79,7 @@
 <b>Readonly: {formSwitch.container.value}</b>
 <CheckboxInput bind:args={formSwitch} />
 <br />
-<Form bind:readonly={formSwitch.container.value} bind:item={item} {layout}/>
+<Form bind:readonly={formSwitch.container.value} bind:item={item} {layout} on:submit={onSubmit}/>
 <br />
 
 <style>
