@@ -21,9 +21,14 @@
     };
 
     const { store, refresh } = createGridStore('https://jsonplaceholder.typicode.com/posts');
+
+    const refreshDataGrid = () => {
+        selected = [];
+        refresh();
+    }
 </script>
 
-<button on:click={refresh} disabled={$store.state !== 'idling'}>Refresh</button>
+<button on:click={refreshDataGrid} disabled={$store.state !== 'idling'}>Refresh</button>
 <span>Selected rows: {selected.length ? selected : 'empty'}</span>
 {#if $store.state === "loading"}
     <span>Loading...</span>
