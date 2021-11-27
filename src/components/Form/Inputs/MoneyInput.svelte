@@ -8,7 +8,7 @@
 </script>
 
 <div>
-    <label for={args.id + '_amount'}>{args.label}</label>
+    <label class="noselect" for={args.id + '_amount'}>{args.label}</label>
     <input id={args.id + '_amount'} type="number" disabled={args.disabled} bind:value={args.container.amount}>
     <select id={args.id + '_currency'} disabled={args.disabled} name={args.label} bind:value={args.container.currency}>
         {#each options as option}

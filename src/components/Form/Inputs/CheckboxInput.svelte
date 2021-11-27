@@ -5,7 +5,7 @@
     export let args: FormElementArgs<BooleanContainer>;
 </script>
 
-<label for={args.id}>{args.label}</label>
+<label class="noselect" for={args.id}>{args.label}</label>
 <input id={args.id} type="checkbox" disabled={args.disabled} bind:checked={args.container.value}>
 
 <style>

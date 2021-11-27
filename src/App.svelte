@@ -66,7 +66,7 @@
 <br />
 <DataGrid url={'https://jsonplaceholder.typicode.com/posts'} on:openForm={openForm} />
 <Dialog bind:dialog={dialog} on:close={clearItem}>
-    <div slot="header">
+    <div class="noselect" slot="header">
         <b>Welcome to svelte-form!</b>
     </div>
     <div slot="body">
