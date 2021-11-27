@@ -8,7 +8,7 @@
     /*
      * GRID
      */
-    let keys = ['userId', 'id', 'title', 'body'];
+    let keys = ['id', 'userId', 'title', 'body'];
 
     /*
      * FORM
@@ -25,7 +25,7 @@
         id: 'readonly',
         disabled: false,
         label: 'readonly',
-        container: { kind: 'boolean', value: false }
+        container: { kind: 'boolean', value: true }
     };
     let layout: FormLayoutNode = {
         direction: 'horizontal',

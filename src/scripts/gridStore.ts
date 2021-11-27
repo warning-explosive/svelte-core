@@ -1,15 +1,15 @@
-import {Writable, writable} from "svelte/store";
-import type {Containers} from "./containers";
+import {Readable, Writable, writable} from "svelte/store";
+import type {Entity} from "./containers";
 
 export type GridStoreStates = 'idling' | 'loading' | 'success' | 'error';
 
 export interface GridStoreData {
     state: GridStoreStates,
-    data: object[] | Error
+    data: Entity[] | Error
 }
 
 export interface GridStore {
-    store: Writable<GridStoreData>,
+    store: Readable<GridStoreData>,
     refresh: () => void
 }
 
@@ -40,9 +40,14 @@ async function fetchData<T>(store: Writable<GridStoreData>, url: string): Promis
     }
 }
 
-function objectsToContainers(obj: { [index: string]:any }): { [index: string]:Containers } {
+function objectsToContainers(obj: { [index: string]:any }): Entity {
 
-    let acc: { [index: string]:Containers } = {};
+    let acc: Entity = {
+        id: {
+            kind: 'string',
+            value: obj['id']
+        }
+    };
 
     return Object
         .keys(obj)

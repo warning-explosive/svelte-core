@@ -5,10 +5,10 @@
     import LinkInput from "./Inputs/LinkInput.svelte";
     import DateInput from "./Inputs/DateInput.svelte";
     import CheckboxInput from "./Inputs/CheckboxInput.svelte";
-    import {Containers} from "../../scripts/containers";
+    import {Entity} from "../../scripts/containers";
 
-    export let readonly: boolean;
-    export let item: { [index: string]: Containers };
+    export let readonly: boolean = true;
+    export let item: Entity;
     export let direction: FormLayoutDirection = undefined;
     export let children: ChildFormLayoutNode[] = [];
 

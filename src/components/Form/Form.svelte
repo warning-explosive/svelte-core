@@ -2,10 +2,10 @@
     import {createEventDispatcher} from "svelte";
     import FormLayout from "./FormLayout.svelte";
     import {FormLayoutNode} from "../../scripts/form";
-    import {Containers} from "../../scripts/containers";
+    import {Entity} from "../../scripts/containers";
 
     export let readonly: boolean = false;
-    export let item: { [index: string]: Containers };
+    export let item: Entity;
     export let layout: FormLayoutNode;
 
     const dispatch = createEventDispatcher();

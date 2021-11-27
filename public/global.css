@@ -25,9 +25,25 @@ a:visited {
 	color: rgb(0,80,160);
 }
 
-table, th, td {
-	border-bottom: 1px solid black;
+table {
 	border-collapse: collapse;
+}
+
+th, td {
+	text-align: left;
+	border-bottom: 1px solid black;
+}
+
+tr.selected {
+	background-color: cornflowerblue;
+}
+
+tr:hover:not(.header) {
+	background-color: darkgrey;
+}
+
+tr.selected:hover:not(.header) {
+	background-color: royalblue;
 }
 
 label {
@@ -37,7 +53,6 @@ label {
 input, button, select, textarea {
 	font-family: inherit;
 	font-size: inherit;
-	-webkit-padding: 0.4em 0;
 	padding: 0.4em;
 	margin: 0 0 0.5em 0;
 	box-sizing: border-box;

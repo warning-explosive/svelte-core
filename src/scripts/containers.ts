@@ -43,4 +43,9 @@ export type Containers =
     | LinkContainer
     | MoneyContainer
 
+export type Entity = {
+    id: StringContainer,
+    [index: string]: Containers
+}
+
 export const containersObjectFactory = <T extends Record<PropertyKey, Containers>>(container: T) => container
