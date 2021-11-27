@@ -25,7 +25,7 @@
 
     const openForm = () => {
         if (!isHeader) {
-            console.log(`trying to open form with element id: ${id}`);
+            dispatch('openForm', id);
         }
     }
 </script>

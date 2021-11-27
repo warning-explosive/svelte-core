@@ -1,13 +1,10 @@
 <script lang="ts">
-    import DataRow from "./DataRow.svelte";
+    import {createEventDispatcher} from "svelte";
     import {createGridStore} from "../../scripts/gridStore";
+    import DataRow from "./DataRow.svelte";
+    import type {Entity} from "../../scripts/containers";
 
-    export let keys: string[] = [];
-
-    let headerContainers = keys.reduce((acc, key) => {
-        acc[key] = { kind: 'string', value: key };
-        return acc;
-    }, {});
+    export let url: string;
 
     let selected:string[] = [];
 
@@ -20,25 +17,41 @@
         selected = selected.filter(id => id !== event.detail);
     };
 
-    const { store, refresh } = createGridStore('https://jsonplaceholder.typicode.com/posts');
+    const { store, refresh, getById } = createGridStore(url);
 
     const refreshDataGrid = () => {
         selected = [];
         refresh();
     }
+
+    const dispatch = createEventDispatcher();
+
+    const openForm = event => {
+        dispatch('openForm', getById(event.detail));
+    }
+
+    let headerContainers: Entity = {
+        id: {
+            kind: 'string',
+            value: 'id'
+        }
+    };
+
+    const getHeaderContainers = (acc: Entity, key: string): Entity => {
+        acc[key] = { kind: 'string', value: key };
+        return acc;
+    };
 </script>
 
-<button on:click={refreshDataGrid} disabled={$store.state !== 'idling'}>Refresh</button>
+<button on:click={refreshDataGrid} disabled={$store.state !== 'idling'}>{$store.state === "loading" ? 'Loading...' : 'Refresh'}</button>
 <span>Selected rows: {selected.length ? selected : 'empty'}</span>
-{#if $store.state === "loading"}
-    <span>Loading...</span>
-{:else if $store.state === "error"}
+{#if $store.state === "error"}
     <span>Error: {$store.data}</span>
-{:else }
+{:else if $store.state === "idling"}
     <table>
-        <DataRow id={'header'} isHeader={true} {keys} containers={headerContainers} />
+        <DataRow id={'header'} isHeader={true} keys={$store.keys} containers={$store.keys.reduce(getHeaderContainers, headerContainers)} />
         {#each $store.data as containers (containers.id.value)}
-            <DataRow id={containers.id.value} isHeader={false} {keys} {containers} on:selected={select} on:unselected={unselect} />
+            <DataRow id={containers.id.value} isHeader={false} keys={$store.keys} {containers} on:selected={select} on:unselected={unselect} on:openForm={openForm} />
         {/each}
     </table>
 {/if}
