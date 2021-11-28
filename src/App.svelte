@@ -41,7 +41,7 @@
         ]
     };
 
-    const openForm = event => {
+    const openForm = (event: CustomEvent<Entity>): void => {
         item = event.detail;
         dialog.showModal();
     };

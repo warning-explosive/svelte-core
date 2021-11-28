@@ -1,5 +1,6 @@
 import {Readable, Writable, writable, get} from "svelte/store";
 import type {Entity} from "./containers";
+import type {SwapColumnsData} from "./dataGrid";
 
 export type GridStoreStates = 'idling' | 'loading' | 'error';
 
@@ -12,7 +13,8 @@ export interface GridStoreData {
 export interface GridStore {
     store: Readable<GridStoreData>,
     refresh: () => void,
-    getById: (id: string) => Entity | undefined;
+    getById: (id: string) => Entity | undefined,
+    reorderColumns: (data: SwapColumnsData) => void
 }
 
 const getGridData = (state: GridStoreStates, data?: Entity[] | Error, keys?: string[]) => {
@@ -31,8 +33,15 @@ export function createGridStore(url: string): GridStore {
     return {
         store: store,
         refresh: () => fetchData(store, url),
-        getById: (id: string) => getById(store, id)
+        getById: (id: string) => getById(store, id),
+        reorderColumns: (data: SwapColumnsData) => reorderColumns(store, data)
     };
+}
+
+function reorderColumns(store: Writable<GridStoreData>, data: SwapColumnsData): void {
+    let gridStoreData = get(store);
+    [gridStoreData.keys[data.from.index], gridStoreData.keys[data.to.index]] = [gridStoreData.keys[data.to.index], gridStoreData.keys[data.from.index]];
+    store.set(gridStoreData);
 }
 
 function getById(store: Readable<GridStoreData>, id: string): Entity | undefined {

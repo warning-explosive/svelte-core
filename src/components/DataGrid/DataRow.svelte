@@ -31,8 +31,8 @@
 </script>
 
 <tr id={containers.id.value} class:selected={selected} class:header={isHeader} on:click={select} on:dblclick={openForm}>
-    {#each keys as key}
-        <DataCell isHeader={isHeader} container={containers[key]} />
+    {#each keys as key, index}
+        <DataCell isHeader={isHeader} {index} {key} container={containers[key]} on:swapColumns />
     {/each}
 </tr>
 
