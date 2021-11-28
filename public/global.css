@@ -48,7 +48,8 @@ tr.selected:hover:not(.header) {
 
 dialog::backdrop { /* native */
 	backdrop-filter: blur(2px);
- }
+}
+
 dialog + .backdrop { /* polyfill */
 	backdrop-filter: blur(2px);
 }
@@ -96,4 +97,18 @@ button:focus {
 	-moz-user-select: none; /* Firefox */
 	-ms-user-select: none; /* Internet Explorer/Edge */
 	user-select: none; /* Non-prefixed version, currently supported by Chrome and Opera */;
+}
+
+::-webkit-scrollbar {
+	overflow-y: auto;
+	width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+	border-radius: 5px;
+	background: darkgrey;
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background: royalblue;
 }

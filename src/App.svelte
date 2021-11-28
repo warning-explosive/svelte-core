@@ -44,15 +44,21 @@
     const openForm = (event: CustomEvent<Entity>): void => {
         item = event.detail;
         dialog.showModal();
+        dialog = dialog;
+        document.querySelector('body').style.overflow = 'hidden';
     };
 
     const closeForm = () => {
         dialog.close();
+        dialog = dialog;
+        document.querySelector('body').style.overflow = 'auto';
     }
 
     const submitForm = () => {
         console.log(JSON.stringify(item));
         closeForm();
+        dialog = dialog;
+        document.querySelector('body').style.overflow = 'auto';
     };
 
     const clearItem = () => {
