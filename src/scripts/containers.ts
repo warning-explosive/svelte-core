@@ -48,4 +48,4 @@ export type Entity = {
     [index: string]: Containers
 }
 
-export const containersObjectFactory = <T extends Record<PropertyKey, Containers>>(container: T) => container
+export const createEntity = <T extends Record<PropertyKey, Containers>>(container: T) => container

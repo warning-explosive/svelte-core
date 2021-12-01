@@ -6,6 +6,12 @@
     export let readonly: boolean = false;
     export let item: Entity;
     export let layout: FormLayoutNode;
+    export let isValidForm: boolean = false;
+
+    $: {
+        // TODO: make real validation;
+        isValidForm = true;
+    };
 </script>
 
 <form on:submit|preventDefault>

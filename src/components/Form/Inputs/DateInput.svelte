@@ -8,8 +8,13 @@
 
     let dateString;
 
-    onMount(() => dateString = getDateString(args.container.value));
-    const onChange = () => args.container.value = new Date(Date.parse(dateString));
+    onMount(() => {
+        dateString = getDateString(args.container.value);
+    });
+
+    const onChange = () => {
+        args.container.value = new Date(Date.parse(dateString));
+    }
 </script>
 
 <label class="noselect" for={args.id}>{args.label}</label>
