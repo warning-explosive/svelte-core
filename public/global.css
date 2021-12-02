@@ -30,31 +30,6 @@ a:visited {
 }
 
 /*
- * Table
- */
-
-table {
-	border-collapse: collapse;
-}
-
-th, td {
-	text-align: left;
-	border-bottom: 1px solid black;
-}
-
-tr.selected {
-	background-color: cornflowerblue;
-}
-
-tr:hover:not(.header) {
-	background-color: darkgrey;
-}
-
-tr.selected:hover:not(.header) {
-	background-color: royalblue;
-}
-
-/*
  * Dialog
  */
 
