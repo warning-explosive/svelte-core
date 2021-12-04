@@ -14,6 +14,7 @@ export interface GridStore {
     store: Readable<GridStoreData>,
     refresh: () => void,
     getById: (id: string) => Entity | undefined,
+    deleteEntity: (id: string) => void,
     reorderColumns: (data: SwapColumnsData) => void
 }
 
@@ -34,8 +35,20 @@ export function createGridStore(url: string): GridStore {
         store: store,
         refresh: () => fetchData(store, url),
         getById: (id: string) => getById(store, id),
+        deleteEntity: (id: string) => deleteEntity(store, id),
         reorderColumns: (data: SwapColumnsData) => reorderColumns(store, data)
     };
+}
+
+function deleteEntity(store: Writable<GridStoreData>, id: string): void {
+    let gridStoreData = get(store);
+
+    if (gridStoreData.data instanceof Error) {
+        return;
+    }
+
+    gridStoreData.data = gridStoreData.data.filter(entity => entity.id.value != id);
+    store.set(gridStoreData);
 }
 
 function reorderColumns(store: Writable<GridStoreData>, data: SwapColumnsData): void {

@@ -1,11 +1,14 @@
 <script lang="ts">
     import {createEventDispatcher} from "svelte";
+    import {slide} from "svelte/transition";
     import {flip, FlipParams} from "svelte/animate";
+    import {linear} from 'svelte/easing';
     import {createGridStore} from "../../scripts/gridStore";
     import type {Entity, StringContainer} from "../../scripts/containers";
     import type {SwapColumnsData} from "../../scripts/dataGrid";
     import {Containers} from "../../scripts/containers";
     import {ColumnData} from "../../scripts/dataGrid";
+    import type {SlideParams} from "svelte/types/runtime/transition";
 
     export let url: string;
 
@@ -32,11 +35,21 @@
     /*
      * Grid store
      */
-    const { store, refresh, reorderColumns } = createGridStore(url);
+    const { store, refresh, reorderColumns, deleteEntity } = createGridStore(url);
 
     const refreshDataGrid = () => {
         selected = [];
         refresh();
+    }
+
+    /*
+     * Delete entity
+     */
+    const deleteSelected = () => {
+        for (const id of selected) {
+            deleteEntity(id);
+            selected = selected.filter(selected => selected !== id)
+        }
     }
 
     /*
@@ -127,13 +140,31 @@
     /*
      * Animation
      */
-    const flipParams: FlipParams = { duration: 500 };
+    const columnsFlipParams: FlipParams = {
+        duration: 500,
+        easing: linear
+    };
+
+    const rowSlideInParams: SlideParams = {
+        duration: 500,
+        easing: linear
+    };
+
+    const rowSlideOutParams: SlideParams = {
+        duration: 500,
+        easing: linear
+    };
 </script>
 
 <button
     disabled={$store.state !== 'idling'}
     on:click={refreshDataGrid}>
     {$store.state === "loading" ? 'Loading...' : 'Refresh'}
+</button>
+<button
+    disabled={!selected.length}
+    on:click={deleteSelected}>
+    Delete selected
 </button>
 <span>Selected rows: {selected.length ? selected : 'empty'}</span>
 {#if $store.state === "error"}
@@ -145,7 +176,7 @@
                 <th
                     class="noselect"
                     class:dndHover={dndHoveredKey === key}
-                    animate:flip={flipParams}
+                    animate:flip={columnsFlipParams}
                     draggable={true}
                     on:dragstart={e => onDragStart(key, index, e)}
                     on:dragover|preventDefault={onDragOver}
@@ -157,11 +188,16 @@
             {/each}
         </tr>
         {#each $store.data as entity (entity.id.value)}
-            <tr class:selected={isSelected(entity, selected)} on:click={() => select(entity)} on:dblclick={() => openForm(entity)}>
+            <tr
+                in:slide={rowSlideInParams}
+                out:slide={rowSlideOutParams}
+                class:selected={isSelected(entity, selected)}
+                on:click={() => select(entity)}
+                on:dblclick={() => openForm(entity)}>
                 {#each $store.keys as key, index (key)}
                     <td
                         class="noselect"
-                        animate:flip={flipParams}>
+                        animate:flip={columnsFlipParams}>
                         {getDisplayValue(entity[key])}
                     </td>
                 {/each}
@@ -178,6 +214,10 @@
     th, td {
         text-align: left;
         border-bottom: 1px solid black;
+    }
+
+    tr {
+        height: 5vh;
     }
 
     tr.selected {
