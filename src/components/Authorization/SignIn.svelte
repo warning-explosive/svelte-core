@@ -33,7 +33,7 @@
     };
 </script>
 
-<section class="centered">
+<section class="centered-content">
     <Form readonly={false} {item} {layout} bind:isValidForm={isValidSignInForm} />
     <button disabled={!isValidSignInForm} on:click={signIn}>Sign in</button>
     <button on:click={signUp}>Sign up</button>

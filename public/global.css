@@ -30,18 +30,6 @@ a:visited {
 }
 
 /*
- * Dialog
- */
-
-dialog::backdrop { /* native */
-	backdrop-filter: blur(2px);
-}
-
-dialog + .backdrop { /* polyfill */
-	backdrop-filter: blur(2px);
-}
-
-/*
  * Inputs
  */
 
@@ -98,7 +86,7 @@ button:focus {
 	user-select: none; /* Non-prefixed version, currently supported by Chrome and Opera */;
 }
 
-.centered {
+.centered-content {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;

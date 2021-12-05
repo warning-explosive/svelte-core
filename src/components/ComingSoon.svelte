@@ -2,7 +2,7 @@
     export let name: string;
 </script>
 
-<section class="centered">
+<section class="centered-content">
     <span>{name} is coming soon!</span>
 </section>
 

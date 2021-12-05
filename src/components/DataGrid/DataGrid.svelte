@@ -23,7 +23,10 @@
         return selected.includes(entity.id.value);
     };
 
-    const select = (entity: Entity): void => {
+    const select = (entity: Entity, e: PointerEvent): void => {
+        if (!e.altKey) {
+            return;
+        }
         const id = entity.id.value;
         if (selected.includes(id)) {
             selected = selected.filter(it => it !== id);
@@ -192,7 +195,7 @@
                 in:slide={rowSlideInParams}
                 out:slide={rowSlideOutParams}
                 class:selected={isSelected(entity, selected)}
-                on:click={() => select(entity)}
+                on:click={e => select(entity, e)}
                 on:dblclick={() => openForm(entity)}>
                 {#each $store.keys as key, index (key)}
                     <td

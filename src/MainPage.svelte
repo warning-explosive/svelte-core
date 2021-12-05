@@ -2,13 +2,14 @@
     import {BooleanContainer, Entity} from "./scripts/containers";
     import {FormElementArgs, FormLayoutNode} from "./scripts/form";
     import DataGrid from "./components/DataGrid/DataGrid.svelte";
-    import Dialog from "./components/Form/Dialog.svelte";
+    import Dialog from "./components/Form/Modal.svelte";
     import Form from "./components/Form/Form.svelte";
     import CheckboxInput from "./components/Form/Inputs/CheckboxInput.svelte";
+    import Modal from "./scripts/modal";
 
-    let dialog;
     let item: Entity | undefined = undefined;
     let isValidForm: boolean;
+    const form = new Modal();
 
     let formSwitch: FormElementArgs<BooleanContainer> = {
         id: 'readonly',
@@ -44,33 +45,30 @@
 
     const openForm = (event: CustomEvent<Entity>): void => {
         item = event.detail;
-        dialog.showModal();
-        dialog = dialog;
-        document.querySelector('body').style.overflow = 'hidden';
+        form.open();
     };
 
     const closeForm = () => {
-        dialog.close();
-        dialog = dialog;
-        document.querySelector('body').style.overflow = 'auto';
+        form.close();
+        item = undefined;
+    }
+
+    const closeFormEsc = (e: CustomEvent<KeyboardEvent>): void => {
+        if (e.detail.key === 'Escape') {
+            closeForm();
+        }
     }
 
     const submitForm = () => {
         console.log(JSON.stringify(item));
         closeForm();
-        dialog = dialog;
-        document.querySelector('body').style.overflow = 'auto';
-    };
-
-    const clearItem = () => {
-        item = undefined;
     };
 </script>
 
 <b>Welcome to svelte-data-grid!</b>
 <br />
 <DataGrid url={'https://jsonplaceholder.typicode.com/posts'} on:openForm={openForm} />
-<Dialog bind:dialog={dialog} on:close={clearItem}>
+<Dialog modal={form} on:backdropClick={closeForm} on:keydown|stopPropagation={closeFormEsc}>
     <div class="noselect" slot="header">
         <b>Welcome to svelte-form!</b>
     </div>
