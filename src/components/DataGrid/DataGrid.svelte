@@ -9,6 +9,8 @@
     import {Containers} from "../../scripts/containers";
     import {ColumnData} from "../../scripts/dataGrid";
     import type {SlideParams} from "svelte/types/runtime/transition";
+    import ButtonGroup from "../Form/Controls/ButtonGroup.svelte";
+    import Button from "../Form/Controls/Button.svelte";
 
     export let url: string;
 
@@ -159,17 +161,14 @@
     };
 </script>
 
-<button
-    disabled={$store.state !== 'idling'}
-    on:click={refreshDataGrid}>
-    {$store.state === "loading" ? 'Loading...' : 'Refresh'}
-</button>
-<button
-    disabled={!selected.length}
-    on:click={deleteSelected}>
-    Delete selected
-</button>
-<span>Selected rows: {selected.length ? selected : 'empty'}</span>
+<ButtonGroup options={{direction: 'horizontal'}}>
+    <Button
+        options={{label: $store.state === "loading" ? 'Loading...' : 'Refresh', disabled: $store.state !== 'idling'}}
+        on:click={refreshDataGrid}/>
+    <Button
+        options={{label: 'Delete selected' + (selected.length ? ': ' + selected : ''), disabled: !selected.length}}
+        on:click={deleteSelected}/>
+</ButtonGroup>
 {#if $store.state === "error"}
     <span>Error: {$store.data}</span>
 {:else if $store.state === "idling"}

@@ -5,7 +5,7 @@
     import type {FadeParams} from "svelte/types/runtime/transition";
     import Modal from "../../scripts/modal";
 
-    export const modal: Modal;
+    export let modal: Modal;
 
     const dispatch = createEventDispatcher();
 
@@ -48,15 +48,7 @@
             in:scale={scaleIn}
             out:scale={scaleOut}
             on:click|stopPropagation={() => {}}>
-            <header>
-                <slot name="header" />
-            </header>
-            <main>
-                <slot name="body" />
-            </main>
-            <footer>
-                <slot name="buttons" />
-            </footer>
+            <slot />
         </div>
     </div>
 {/if}

@@ -4,6 +4,8 @@
     import {createEntity} from "../../scripts/containers";
     import type {FormLayoutNode} from "../../scripts/form";
     import {Pages} from "../../scripts/pages";
+    import ButtonGroup from "../Form/Controls/ButtonGroup.svelte";
+    import Button from "../Form/Controls/Button.svelte";
 
     let isValidSignInForm: boolean;
 
@@ -34,9 +36,13 @@
 </script>
 
 <section class="centered-content">
-    <Form readonly={false} {item} {layout} bind:isValidForm={isValidSignInForm} />
-    <button disabled={!isValidSignInForm} on:click={signIn}>Sign in</button>
-    <button on:click={signUp}>Sign up</button>
+    <div>
+        <Form readonly={false} {item} {layout} bind:isValidForm={isValidSignInForm} />
+        <ButtonGroup options={{direction: 'horizontal'}}>
+            <Button options={{label: 'Sign in', disabled: !isValidSignInForm}} on:click={signIn}/>
+            <Button options={{label: 'Sign up'}} on:click={signUp}/>
+        </ButtonGroup>
+    </div>
 </section>
 
 <style>

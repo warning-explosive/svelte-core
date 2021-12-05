@@ -6,6 +6,8 @@
     import Form from "./components/Form/Form.svelte";
     import CheckboxInput from "./components/Form/Inputs/CheckboxInput.svelte";
     import Modal from "./scripts/modal";
+    import Button from "./components/Form/Controls/Button.svelte";
+    import ButtonGroup from "./components/Form/Controls/ButtonGroup.svelte";
 
     let item: Entity | undefined = undefined;
     let isValidForm: boolean;
@@ -68,20 +70,20 @@
 <b>Welcome to svelte-data-grid!</b>
 <br />
 <DataGrid url={'https://jsonplaceholder.typicode.com/posts'} on:openForm={openForm} />
-<Dialog modal={form} on:backdropClick={closeForm} on:keydown|stopPropagation={closeFormEsc}>
-    <div class="noselect" slot="header">
+<Dialog modal={form} on:backdropClick={closeForm} on:keydown={closeFormEsc}>
+    <div class="noselect">
         <b>Welcome to svelte-form!</b>
     </div>
-    <div slot="body">
-        {#if (item)}
+    {#if (item)}
+        <div>
             <CheckboxInput bind:args={formSwitch} />
             <Form readonly={formSwitch.container.value} bind:item={item} layout={layout} bind:isValidForm={isValidForm} />
-        {/if}
-    </div>
-    <div slot="buttons">
-        <button on:click={closeForm}>Close</button>
-        <button disabled={!isValidForm} on:click={submitForm}>Submit</button>
-    </div>
+        </div>
+    {/if}
+    <ButtonGroup options={{direction: 'horizontal'}}>
+        <Button options={{label: 'Close'}} on:click={closeForm}/>
+        <Button options={{label: 'Submit', disabled: !isValidForm}} on:click={submitForm}/>
+    </ButtonGroup>
 </Dialog>
 
 <style>
