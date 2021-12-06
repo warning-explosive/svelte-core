@@ -4,9 +4,9 @@
     import {flip, FlipParams} from "svelte/animate";
     import {linear} from 'svelte/easing';
     import {createGridStore} from "../../scripts/gridStore";
-    import type {Entity, StringContainer} from "../../scripts/containers";
+    import type {Entity, StringDataContainer} from "../../scripts/dataContainers";
     import type {SwapColumnsData} from "../../scripts/dataGrid";
-    import {Containers} from "../../scripts/containers";
+    import {DataContainers} from "../../scripts/dataContainers";
     import {ColumnData} from "../../scripts/dataGrid";
     import type {SlideParams} from "svelte/types/runtime/transition";
     import ButtonGroup from "../Form/Controls/ButtonGroup.svelte";
@@ -60,18 +60,18 @@
     /*
      * Form opening
      */
-    const openForm = (item: Entity): void => {
-        dispatch('openForm', item);
+    const openForm = (entity: Entity): void => {
+        dispatch('openForm', entity);
     }
 
     /*
      * Display data
      */
-    const getHeaderContainer = (key: string): StringContainer => {
+    const getHeaderContainer = (key: string): StringDataContainer => {
         return { kind: 'string', value: key };
     };
 
-    const getDisplayValue = (container: Containers): string => {
+    const getDisplayValue = (container: DataContainers): string => {
         let displayValue: string;
 
         switch (container.kind) {

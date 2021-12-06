@@ -1,41 +1,45 @@
 <script lang="ts">
-    import {ChildFormLayoutNode, FormElementArgs, FormLayoutDirection} from "../../scripts/form";
+    import {ChildFormLayoutNode, FormElementArgs, FormElementNode, FormLayoutNode} from "../../scripts/form";
     import TextInput from "./Inputs/TextInput.svelte";
     import MoneyInput from "./Inputs/MoneyInput.svelte";
     import LinkInput from "./Inputs/LinkInput.svelte";
     import DateInput from "./Inputs/DateInput.svelte";
     import CheckboxInput from "./Inputs/CheckboxInput.svelte";
-    import {Entity} from "../../scripts/containers";
+    import {Entity} from "../../scripts/dataContainers";
 
-    export let readonly: boolean = true;
-    export let item: Entity;
-    export let direction: FormLayoutDirection = undefined;
-    export let children: ChildFormLayoutNode[] = [];
+    export let entity: Entity;
+    export let node: ChildFormLayoutNode;
+
+    const direction = (node as FormLayoutNode).direction;
+    const children = (node as FormLayoutNode).children;
+    const isLayout = !!direction && !!children;
+
+    const key = (node as FormElementNode).key;
+    const disabled = (node as FormElementNode).disabled;
+    const isElement = !!key;
 
     let args: FormElementArgs<any>;
 
-    $: if (!direction) {
-        let key = $$props.key;
-
+    $: if (isElement) {
         args = {
-            id: key,
-            disabled: readonly,
+            key: key,
+            disabled: disabled,
             label: key,
-            container: item[key]
+            container: entity[key]
         }
     }
 </script>
 
-<div class={direction}>
-    {#if !!direction}
+<div class="{isLayout ? `${direction} layout` : ''}">
+    {#if isLayout}
         {#each children as child}
-            <svelte:self {...child} {readonly} bind:item={item} />
+            <svelte:self node={child} bind:entity={entity} on:validate/>
         {/each}
     {:else}
         {#if args.container.kind === 'string'}
-            <TextInput bind:args={args} />
+            <TextInput bind:args={args} on:validate/>
         {:else if args.container.kind === 'number'}
-            <TextInput bind:args={args} />
+            <TextInput bind:args={args} on:validate/>
         {:else if args.container.kind === 'boolean'}
             <CheckboxInput bind:args={args} />
         {:else if args.container.kind === 'date'}
@@ -51,21 +55,19 @@
 </div>
 
 <style>
-    .horizontal {
-        margin: 5px;
-        padding: 5px;
+    .layout {
+        margin: 4px;
+        padding: 4px;
 
         display: flex;
-        flex-direction: row;
         justify-content: flex-start;
     }
 
-    .vertical {
-        margin: 5px;
-        padding: 5px;
+    .horizontal {
+        flex-direction: row;
+    }
 
-        display: flex;
+    .vertical {
         flex-direction: column;
-        justify-content: flex-start;
     }
 </style>

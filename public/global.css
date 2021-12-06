@@ -44,7 +44,6 @@ input, button, select, textarea {
 	margin: 0 0 0.5em 0;
 	box-sizing: border-box;
 	border: 1px solid #ccc;
-	border-radius: 2px;
 }
 
 input:disabled {
@@ -79,11 +78,11 @@ input:disabled {
 
 ::-webkit-scrollbar {
 	overflow-y: auto;
-	width: 10px;
+	width: 8px;
 }
 
 ::-webkit-scrollbar-thumb {
-	border-radius: 5px;
+	border-radius: 4px;
 	background: darkgrey;
 }
 

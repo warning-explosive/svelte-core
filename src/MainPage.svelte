@@ -1,24 +1,16 @@
 <script lang="ts">
-    import {BooleanContainer, Entity} from "./scripts/containers";
-    import {FormElementArgs, FormLayoutNode} from "./scripts/form";
+    import {Entity} from "./scripts/dataContainers";
+    import {FormLayoutNode} from "./scripts/form";
     import DataGrid from "./components/DataGrid/DataGrid.svelte";
     import Dialog from "./components/Form/Modal.svelte";
     import Form from "./components/Form/Form.svelte";
-    import CheckboxInput from "./components/Form/Inputs/CheckboxInput.svelte";
     import Modal from "./scripts/modal";
     import Button from "./components/Form/Controls/Button.svelte";
     import ButtonGroup from "./components/Form/Controls/ButtonGroup.svelte";
 
-    let item: Entity | undefined = undefined;
+    let entity: Entity | undefined = undefined;
     let isValidForm: boolean;
     const form = new Modal();
-
-    let formSwitch: FormElementArgs<BooleanContainer> = {
-        id: 'readonly',
-        disabled: false,
-        label: 'readonly',
-        container: { kind: 'boolean', value: true }
-    };
 
     let layout: FormLayoutNode = {
         direction: 'horizontal',
@@ -29,15 +21,15 @@
                     {
                         direction: "vertical",
                         children: [
-                            { key: 'id' },
-                            { key: 'userId' }
+                            { key: 'id', disabled: true },
+                            { key: 'userId', disabled: false }
                         ]
                     },
                     {
                         direction: "vertical",
                         children: [
-                            { key: 'title' },
-                            { key: 'body' }
+                            { key: 'title', disabled: false },
+                            { key: 'body', disabled: false }
                         ]
                     }
                 ]
@@ -46,23 +38,23 @@
     };
 
     const openForm = (event: CustomEvent<Entity>): void => {
-        item = event.detail;
+        entity = event.detail;
         form.open();
     };
 
     const closeForm = () => {
         form.close();
-        item = undefined;
+        entity = undefined;
     }
 
-    const closeFormEsc = (e: CustomEvent<KeyboardEvent>): void => {
-        if (e.detail.key === 'Escape') {
+    const closeFormEsc = (event: CustomEvent<KeyboardEvent>): void => {
+        if (event.detail.key === 'Escape') {
             closeForm();
         }
     }
 
     const submitForm = () => {
-        console.log(JSON.stringify(item));
+        console.log(JSON.stringify(entity));
         closeForm();
     };
 </script>
@@ -74,10 +66,9 @@
     <div class="noselect">
         <b>Welcome to svelte-form!</b>
     </div>
-    {#if (item)}
+    {#if (entity)}
         <div>
-            <CheckboxInput bind:args={formSwitch} />
-            <Form readonly={formSwitch.container.value} bind:item={item} layout={layout} bind:isValidForm={isValidForm} />
+            <Form bind:entity={entity} layout={layout} bind:isValidForm={isValidForm} />
         </div>
     {/if}
     <ButtonGroup options={{direction: 'horizontal'}}>

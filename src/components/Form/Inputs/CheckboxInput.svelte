@@ -1,12 +1,53 @@
 <script lang="ts">
-    import {FormElementArgs} from "../../../scripts/form";
-    import {BooleanContainer} from "../../../scripts/containers";
+    import {onMount, createEventDispatcher} from "svelte";
+    import {slide} from "svelte/transition";
+    import {linear} from 'svelte/easing';
+    import {FormElementArgs, ValidationEventArgs} from "../../../scripts/form";
+    import {BooleanDataContainer} from "../../../scripts/dataContainers";
+    import {SlideParams} from "svelte/types/runtime/transition";
 
-    export let args: FormElementArgs<BooleanContainer>;
+    export let args: FormElementArgs<BooleanDataContainer>;
+
+    const dispatch = createEventDispatcher();
+
+    let input: HTMLInputElement;
+    let errorMessage = '';
+    let validationEventArgs: ValidationEventArgs = {
+        key: args.key,
+        message: errorMessage
+    };
+
+    const validate = (): void => {
+        dispatch('validate', validationEventArgs);
+        errorMessage = validationEventArgs.message ?? '';
+        input.setCustomValidity(errorMessage);
+    };
+
+    onMount(() => validate());
+
+    /*
+     * Animation
+     */
+    const slideParams: SlideParams = {
+        duration: 200,
+        easing: linear
+    };
 </script>
 
-<label class="noselect" for={args.id}>{args.label}</label>
-<input id={args.id} type="checkbox" disabled={args.disabled} bind:checked={args.container.value}>
+<div>
+    <label class="noselect" for={args.key}>
+        <span>{args.label}</span>
+    </label>
+    <input
+        id={args.key}
+        type="checkbox"
+        disabled={args.disabled}
+        bind:checked={args.container.value}
+        on:click={validate}>
+    {#if errorMessage}
+        <span class="error" transition:slide={slideParams}>{errorMessage}</span>
+    {/if}
+</div>
 
 <style>
 </style>

@@ -62,15 +62,14 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background: gray;
-        backdrop-filter: blur(2px);
+        backdrop-filter: blur(4px);
     }
     .modal-form {
         position: relative;
-        border-radius: 6px;
+        border-radius: 4px;
         background: white;
         border: 2px solid black;
-        filter: drop-shadow(5px 5px 5px gray);
+        filter: drop-shadow(4px 4px 4px gray);
         padding: 1em;
         display: flex;
         flex-direction: column;

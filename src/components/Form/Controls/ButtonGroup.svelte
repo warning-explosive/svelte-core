@@ -4,22 +4,22 @@
     export let options: ButtonGroupOptions;
 </script>
 
-<div class={options.direction}>
+<div class={`${options.direction} layout`}>
     <slot />
 </div>
 
 <style>
-    .vertical {
+    .layout {
         display: flex;
-        flex-direction: column;
         justify-content: center;
-        padding: 10px 24px;
+        padding: 12px 24px;
+    }
+
+    .vertical {
+        flex-direction: column;
     }
 
     .horizontal {
-        display: flex;
         flex-direction: row;
-        justify-content: center;
-        padding: 10px 24px;
     }
 </style>

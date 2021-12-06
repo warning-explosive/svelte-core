@@ -1,5 +1,5 @@
 import {Readable, Writable, writable, get} from "svelte/store";
-import type {Entity} from "./containers";
+import type {Entity} from "./dataContainers";
 import type {SwapColumnsData} from "./dataGrid";
 
 export type GridStoreStates = 'idling' | 'loading' | 'error';
@@ -90,7 +90,6 @@ function getKeys(entity: Entity[]): string[] {
 }
 
 function objectsToContainers(obj: { [index: string]:any }): Entity {
-
     let acc: Entity = {
         id: {
             kind: 'string',

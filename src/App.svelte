@@ -1,13 +1,19 @@
 <script lang="ts">
     import page from "page";
     import {SvelteComponent} from "svelte";
+    import DependencyContainer, {setContainer} from "./scripts/dependencyContainer";
     import MainPage from "./MainPage.svelte";
     import NotFound from "./components/NotFound.svelte";
-    import SignIn from "./components/Authorization/SignIn.svelte";
-    import SignUp from "./components/Authorization/SignUp.svelte";
+    import SignIn from "./components/Authentication/SignIn.svelte";
+    import SignUp from "./components/Authentication/SignUp.svelte";
     import {Pages} from "./scripts/pages";
+    import FormValidator from "./scripts/form";
 
     let component: SvelteComponent;
+
+    const container = new DependencyContainer();
+    container.register('formValidator', new FormValidator());
+    setContainer(container);
 
     page.redirect('/', Pages.SignIn);
     page(Pages.SignIn, () => (component = SignIn));
