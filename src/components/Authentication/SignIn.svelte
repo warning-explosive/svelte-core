@@ -21,7 +21,7 @@
             }
         },
         password: {
-            kind: 'string',
+            kind: 'password',
             value: '',
             validate(): string {
                 return this.value

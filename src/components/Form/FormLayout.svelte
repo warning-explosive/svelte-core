@@ -1,11 +1,13 @@
 <script lang="ts">
     import {ChildFormLayoutNode, FormElementArgs, FormElementNode, FormLayoutNode} from "../../scripts/form";
+    import {Entity} from "../../scripts/dataContainers";
     import TextInput from "./Inputs/TextInput.svelte";
     import MoneyInput from "./Inputs/MoneyInput.svelte";
     import LinkInput from "./Inputs/LinkInput.svelte";
     import DateInput from "./Inputs/DateInput.svelte";
     import CheckboxInput from "./Inputs/CheckboxInput.svelte";
-    import {Entity} from "../../scripts/dataContainers";
+    import PasswordInput from "./Inputs/PasswordInput.svelte";
+    import NumberInput from "./Inputs/NumberInput.svelte";
 
     export let entity: Entity;
     export let node: ChildFormLayoutNode;
@@ -38,16 +40,18 @@
     {:else}
         {#if args.container.kind === 'string'}
             <TextInput bind:args={args} on:validate/>
+        {:else if args.container.kind === 'password'}
+            <PasswordInput bind:args={args} on:validate/>
         {:else if args.container.kind === 'number'}
-            <TextInput bind:args={args} on:validate/>
+            <NumberInput bind:args={args} on:validate/>
         {:else if args.container.kind === 'boolean'}
-            <CheckboxInput bind:args={args} />
+            <CheckboxInput bind:args={args}/>
         {:else if args.container.kind === 'date'}
-            <DateInput bind:args={args} />
+            <DateInput bind:args={args}/>
         {:else if args.container.kind === 'link'}
-            <LinkInput bind:args={args} />
+            <LinkInput bind:args={args}/>
         {:else if args.container.kind === 'money'}
-            <MoneyInput bind:args={args} />
+            <MoneyInput bind:args={args}/>
         {:else}
             <div>Unknown container: {args.container.kind}</div>
         {/if}

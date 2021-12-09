@@ -11,6 +11,10 @@ export interface StringDataContainer extends GenericDataContainer<string> {
     kind: 'string',
 }
 
+export interface PasswordDataContainer extends GenericDataContainer<string> {
+    kind: 'password',
+}
+
 export interface NumberDataContainer extends GenericDataContainer<number> {
     kind: 'number',
 }
@@ -38,6 +42,7 @@ export interface MoneyDataContainer extends DataContainer {
 
 export type DataContainers =
     StringDataContainer
+    | PasswordDataContainer
     | NumberDataContainer
     | BooleanDataContainer
     | DateDataContainer
