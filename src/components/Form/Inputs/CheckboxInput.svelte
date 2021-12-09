@@ -23,7 +23,14 @@
         input.setCustomValidity(errorMessage);
     };
 
-    onMount(() => validate());
+    onMount(() => {
+        validate();
+
+        if (args.focused) {
+            input.focus();
+        }
+    });
+
 
     /*
      * Animation
@@ -43,6 +50,7 @@
         type="checkbox"
         disabled={args.disabled}
         bind:checked={args.container.value}
+        bind:this={input}
         on:click={validate}>
     {#if errorMessage}
         <span class="error" transition:slide={slideParams}>{errorMessage}</span>

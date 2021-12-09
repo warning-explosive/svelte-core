@@ -37,6 +37,10 @@
     const onChange = () => {
         setValue();
         validate();
+
+        if (args.focused) {
+            input.focus();
+        }
     }
 
     /*
@@ -57,6 +61,7 @@
         type="date"
         disabled={args.disabled}
         bind:value={dateString}
+        bind:this={input}
         on:change={onChange}>
     {#if errorMessage}
         <span class="error" transition:slide={slideParams}>{errorMessage}</span>

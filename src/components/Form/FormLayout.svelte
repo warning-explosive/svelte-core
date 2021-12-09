@@ -18,6 +18,7 @@
 
     const key = (node as FormElementNode).key;
     const disabled = (node as FormElementNode).disabled;
+    const focused = (node as FormElementNode).focused;
     const isElement = !!key;
 
     let args: FormElementArgs<any>;
@@ -26,6 +27,7 @@
         args = {
             key: key,
             disabled: disabled,
+            focused: focused,
             label: key,
             container: entity[key]
         }

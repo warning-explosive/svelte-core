@@ -23,7 +23,13 @@
         input.setCustomValidity(errorMessage);
     };
 
-    onMount(() => validate());
+    onMount(() => {
+        validate();
+
+        if (args.focused) {
+            input.focus();
+        }
+    });
 
     /*
      * Animation

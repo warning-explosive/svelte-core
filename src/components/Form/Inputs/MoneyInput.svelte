@@ -12,7 +12,7 @@
 
     const dispatch = createEventDispatcher();
 
-    let input: HTMLInputElement;
+    let select: HTMLSelectElement;
     let errorMessage = '';
     let validationEventArgs: ValidationEventArgs = {
         key: args.key,
@@ -22,10 +22,16 @@
     const validate = (): void => {
         dispatch('validate', validationEventArgs);
         errorMessage = validationEventArgs.message ?? '';
-        input.setCustomValidity(errorMessage);
+        select.setCustomValidity(errorMessage);
     };
 
-    onMount(() => validate());
+    onMount(() => {
+        validate();
+
+        if (args.focused) {
+            select.focus();
+        }
+    });
 
     /*
      * Animation
@@ -45,6 +51,7 @@
         type="number"
         disabled={args.disabled}
         bind:value={args.container.amount}
+        bind:this={select}
         on:input={validate}>
     <select
         id={args.key + '_currency'}

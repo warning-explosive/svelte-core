@@ -37,6 +37,7 @@
             {
                 key: 'login',
                 disabled: false,
+                focused: true
             },
             {
                 key: 'password',

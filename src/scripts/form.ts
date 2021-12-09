@@ -9,7 +9,8 @@ export interface FormLayoutNode {
 
 export interface FormElementNode {
     key: string,
-    disabled: boolean
+    disabled: boolean,
+    focused?: boolean
 }
 
 export type ChildFormLayoutNode = FormLayoutNode | FormElementNode;
@@ -17,6 +18,7 @@ export type ChildFormLayoutNode = FormLayoutNode | FormElementNode;
 export interface FormElementArgs<T extends DataContainers> {
     key: string,
     disabled: boolean,
+    focused?: boolean,
     label: string,
     container: T
 }
