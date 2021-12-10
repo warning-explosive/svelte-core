@@ -1,13 +1,15 @@
 <script lang="ts">
     import page from "page";
     import {SvelteComponent} from "svelte";
-    import DependencyContainer, {setContainer} from "./scripts/dependencyContainer";
+
+    import DependencyContainer, {setContainer} from "./scripts/dependencyContainer.ts";
+    import FormValidator from "./components/Form/formValidation.ts";
+    import {Pages} from "./pages.ts";
+
     import MainPage from "./MainPage.svelte";
     import NotFound from "./components/NotFound.svelte";
     import SignIn from "./components/Authentication/SignIn.svelte";
     import SignUp from "./components/Authentication/SignUp.svelte";
-    import {Pages} from "./scripts/pages";
-    import FormValidator from "./scripts/form";
 
     let component: SvelteComponent;
 

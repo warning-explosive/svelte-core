@@ -3,11 +3,32 @@
     import {linear, backIn, backOut} from "svelte/easing";
     import {fade, scale, ScaleParams} from "svelte/transition";
     import type {FadeParams} from "svelte/types/runtime/transition";
-    import Modal from "../../scripts/modal";
-
-    export let modal: Modal;
 
     const dispatch = createEventDispatcher();
+
+    let showModal = false;
+
+    export const openModal = () => {
+        const body = getBody();
+
+        if (body) {
+            showModal = true;
+            body.style.overflow = 'hidden';
+        }
+    };
+
+    export const closeModal = () => {
+        const body = getBody();
+
+        if (body) {
+            showModal = false;
+            body.style.overflow  = 'auto';
+        }
+    };
+
+    const getBody = (): ElementCSSInlineStyle | null => {
+        return document.querySelector('body');
+    }
 
     const onBackdropClick = () => {
         dispatch('backdropClick');
@@ -38,16 +59,18 @@
 
 <svelte:window on:keydown={onKeydown}/>
 
-{#if modal.modalIsShown}
+{#if showModal}
     <div
         class="modal-backdrop centered-content"
         transition:fade={fadeParams}
-        on:click={onBackdropClick}>
+        on:click={onBackdropClick}
+        on:contextmenu|stopPropagation={() => {}}>
         <div
-            class="modal-form"
+            class="modal-content"
             in:scale={scaleIn}
             out:scale={scaleOut}
-            on:click|stopPropagation={() => {}}>
+            on:click|stopPropagation={() => {}}
+            on:contextmenu|stopPropagation={() => {}}>
             <slot />
         </div>
     </div>
@@ -62,10 +85,11 @@
         left: 0;
         right: 0;
         bottom: 0;
+        background: transparent;
+        -webkit-backdrop-filter: blur(4px);
         backdrop-filter: blur(4px);
     }
-    .modal-form {
-        position: relative;
+    .modal-content {
         border-radius: 4px;
         background: white;
         border: 2px solid black;

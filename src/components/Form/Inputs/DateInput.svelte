@@ -2,10 +2,13 @@
     import {onMount, createEventDispatcher} from "svelte";
     import {slide} from "svelte/transition";
     import {linear} from 'svelte/easing';
-    import {getDateString} from "../../../scripts/date";
-    import {FormElementArgs, ValidationEventArgs} from "../../../scripts/form";
-    import {DateDataContainer} from "../../../scripts/dataContainers";
     import {SlideParams} from "svelte/types/runtime/transition";
+
+    import {getDateString} from "../../../scripts/date.ts";
+    import {ValidationEventArgs} from "../formValidation.ts";
+    import {FormElementArgs} from "../formLayoutNode.ts";
+    import {FormContextMenuArgs} from "../formContextualMenu.ts";
+    import {DateDataContainer} from "../../../scripts/dataContainers.ts";
 
     export let args: FormElementArgs<DateDataContainer>;
 
@@ -43,6 +46,15 @@
         }
     }
 
+    const openContextMenu = (event: PointerEvent): void => {
+        const contextMenuArgs:FormContextMenuArgs = {
+            key: args.key,
+            event: event
+        };
+
+        dispatch('openContextMenu', contextMenuArgs);
+    }
+
     /*
      * Animation
      */
@@ -52,7 +64,7 @@
     };
 </script>
 
-<div>
+<div on:contextmenu|preventDefault={openContextMenu}>
     <label class="noselect" for={args.key}>
         <span>{args.label}</span>
     </label>

@@ -1,6 +1,6 @@
 import {Readable, Writable, writable, get} from "svelte/store";
 import type {Entity} from "./dataContainers";
-import type {SwapColumnsData} from "./dataGrid";
+import type {SwapColumnsData} from "../components/DataGrid/dataGrid";
 
 export type GridStoreStates = 'idling' | 'loading' | 'error';
 

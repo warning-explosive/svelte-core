@@ -2,9 +2,11 @@
     import page from "page";
     import Form from "../Form/Form.svelte";
     import validator from 'validator';
-    import {createEntity} from "../../scripts/dataContainers";
-    import type {ChildFormLayoutNode} from "../../scripts/form";
-    import {Pages} from "../../scripts/pages";
+
+    import {createEntity} from "../../scripts/dataContainers.ts";
+    import {ChildFormLayoutNode} from "../Form/formLayoutNode.ts";
+    import {Pages} from "../../pages.ts";
+
     import ButtonGroup from "../Form/Controls/ButtonGroup.svelte";
     import Button from "../Form/Controls/Button.svelte";
 
@@ -14,20 +16,20 @@
         login: {
             kind: 'string',
             value: '',
-            validate(): string {
+            /*validate(): string {
                 return validator.isEmail(this.value)
                     ? ''
                     : 'Value should be a valid email address';
-            }
+            }*/
         },
         password: {
             kind: 'password',
             value: '',
-            validate(): string {
+            /*validate(): string {
                 return this.value
                     ? ''
                     : 'Required';
-            }
+            }*/
         }
     });
 

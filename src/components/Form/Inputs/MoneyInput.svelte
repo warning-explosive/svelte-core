@@ -2,9 +2,12 @@
     import {onMount, createEventDispatcher} from "svelte";
     import {slide} from "svelte/transition";
     import {linear} from 'svelte/easing';
-    import {MoneyDataContainer} from "../../../scripts/dataContainers";
-    import {FormElementArgs, ValidationEventArgs} from "../../../scripts/form";
     import {SlideParams} from "svelte/types/runtime/transition";
+
+    import {MoneyDataContainer} from "../../../scripts/dataContainers.ts";
+    import {ValidationEventArgs} from "../formValidation.ts";
+    import {FormElementArgs} from "../formLayoutNode.ts";
+    import {FormContextMenuArgs} from "../formContextualMenu.ts";
 
     export let args: FormElementArgs<MoneyDataContainer>;
 
@@ -33,6 +36,15 @@
         }
     });
 
+    const openContextMenu = (event: PointerEvent): void => {
+        const contextMenuArgs:FormContextMenuArgs = {
+            key: args.key,
+            event: event
+        };
+
+        dispatch('openContextMenu', contextMenuArgs);
+    }
+
     /*
      * Animation
      */
@@ -42,7 +54,7 @@
     };
 </script>
 
-<div>
+<div on:contextmenu|preventDefault={openContextMenu}>
     <label class="noselect" for={args.key + '_amount'}>
         <span>{args.label}</span>
     </label>

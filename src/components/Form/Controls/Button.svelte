@@ -1,6 +1,7 @@
 <script lang="ts">
     import {createEventDispatcher} from "svelte";
-    import type {ButtonOptions} from "../../../scripts/formElementOptions";
+
+    import {ButtonOptions} from "./buttonOptions.ts";
 
     export let options: ButtonOptions;
 
@@ -11,9 +12,16 @@
     };
 </script>
 
-<button disabled={options.disabled} on:click={onClick}>
-    {#if options.icon}{options.icon}{/if}
-    {#if options.label}{options.label}{/if}
+<button
+    disabled={options.disabled}
+    on:click={onClick}
+    on:contextmenu|preventDefault={() => {}}>
+    {#if options.icon}
+        {options.icon}
+    {/if}
+    {#if options.label}
+        <span class="noselect">{options.label}</span>
+    {/if}
 </button>
 
 <style>

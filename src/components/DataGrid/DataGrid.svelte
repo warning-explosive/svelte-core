@@ -3,14 +3,18 @@
     import {slide} from "svelte/transition";
     import {flip, FlipParams} from "svelte/animate";
     import {linear} from 'svelte/easing';
-    import {createGridStore} from "../../scripts/gridStore";
-    import type {Entity, StringDataContainer} from "../../scripts/dataContainers";
-    import type {SwapColumnsData} from "../../scripts/dataGrid";
-    import {DataContainers} from "../../scripts/dataContainers";
-    import {ColumnData} from "../../scripts/dataGrid";
-    import type {SlideParams} from "svelte/types/runtime/transition";
+    import {SlideParams} from "svelte/types/runtime/transition";
+
+    import {createGridStore} from "../../scripts/gridStore.ts";
+    import {Entity, StringDataContainer, DataContainers} from "../../scripts/dataContainers.ts";
+    import {SwapColumnsData} from "./dataGrid.ts";
+    import {ColumnData} from "./dataGrid.ts";
+
     import ButtonGroup from "../Form/Controls/ButtonGroup.svelte";
     import Button from "../Form/Controls/Button.svelte";
+    import Menu from "../Menu/Menu.svelte";
+    import MenuOption from "../Menu/MenuOption.svelte";
+    import MenuDivider from "../Menu/MenuDivider.svelte";
 
     export let url: string;
 
@@ -78,6 +82,9 @@
             case "string":
                 displayValue = container.value;
                 break;
+            case "password":
+                displayValue = container.value;
+                break;
             case "number":
                 displayValue = container.value.toString();
                 break;
@@ -143,6 +150,34 @@
     }
 
     /*
+     * Context menu
+     */
+    let openMenu: (event: PointerEvent) => Promise<void>;
+    let closeMenu: () => Promise<void>;
+
+    const openContextMenu = async (entity: Entity, event: PointerEvent):Promise<void> => {
+        await closeMenu();
+
+        if (!selected.includes(entity.id.value)) {
+            selected = [entity.id.value];
+        }
+
+        await openMenu(event);
+    }
+
+    const contextualDeleteSelected = () => {
+        deleteSelected();
+        closeMenu();
+    }
+
+    const contextualDeleteSelectedArgs = (selected: string[]) => {
+        return {
+            text: 'delete ' + selected,
+            disabled: false
+        };
+    }
+
+    /*
      * Animation
      */
     const columnsFlipParams: FlipParams = {
@@ -161,6 +196,11 @@
     };
 </script>
 
+<Menu bind:openMenu={openMenu} bind:closeMenu={closeMenu}>
+    <MenuOption args={contextualDeleteSelectedArgs(selected)} on:click={contextualDeleteSelected}/>
+    <MenuDivider/>
+    <MenuOption args={{text: "disabled action", disabled: true}}/>
+</Menu>
 <ButtonGroup options={{direction: 'horizontal'}}>
     <Button
         options={{label: $store.state === "loading" ? 'Loading...' : 'Refresh', disabled: $store.state !== 'idling'}}
@@ -195,7 +235,8 @@
                 out:slide={rowSlideOutParams}
                 class:selected={isSelected(entity, selected)}
                 on:click={e => select(entity, e)}
-                on:dblclick={() => openForm(entity)}>
+                on:dblclick={() => openForm(entity)}
+                on:contextmenu|preventDefault={e => openContextMenu(entity, e)}>
                 {#each $store.keys as key, index (key)}
                     <td
                         class="noselect"
