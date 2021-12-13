@@ -30,6 +30,7 @@
     "page": "^1.11.6",
     "query-string": "^7.0.1",
     "sirv-cli": "^1.0.0",
+    "svelte-themer": "^0.4.13",
     "validator": "^13.7.0"
   }
 }

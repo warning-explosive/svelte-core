@@ -1,12 +1,10 @@
 <script lang="ts">
-    import {ButtonGroupOptions} from "./buttonOptions.ts";
+    import { ButtonGroupOptions } from './buttonOptions.ts'
 
-    export let options: ButtonGroupOptions;
+    export let options: ButtonGroupOptions
 </script>
 
-<div
-    class={`${options.direction} layout`}
-    on:contextmenu|preventDefault={() => {}}>
+<div class="{`${options.direction} layout`}" on:contextmenu|preventDefault="{() => {}}">
     <slot />
 </div>
 

@@ -1,76 +1,76 @@
 <script lang="ts">
-    import {createEventDispatcher} from "svelte";
-    import {linear, backIn, backOut} from "svelte/easing";
-    import {fade, scale, ScaleParams} from "svelte/transition";
-    import type {FadeParams} from "svelte/types/runtime/transition";
+    import { createEventDispatcher } from 'svelte'
+    import { linear, backIn, backOut } from 'svelte/easing'
+    import { fade, scale, ScaleParams } from 'svelte/transition'
+    import type { FadeParams } from 'svelte/types/runtime/transition'
 
-    const dispatch = createEventDispatcher();
+    const dispatch = createEventDispatcher()
 
-    let showModal = false;
+    let showModal = false
 
     export const openModal = () => {
-        const body = getBody();
+        const body = getBody()
 
         if (body) {
-            showModal = true;
-            body.style.overflow = 'hidden';
+            showModal = true
+            body.style.overflow = 'hidden'
         }
-    };
+    }
 
     export const closeModal = () => {
-        const body = getBody();
+        const body = getBody()
 
         if (body) {
-            showModal = false;
-            body.style.overflow  = 'auto';
+            showModal = false
+            body.style.overflow = 'auto'
         }
-    };
+    }
 
     const getBody = (): ElementCSSInlineStyle | null => {
-        return document.querySelector('body');
+        return document.querySelector('body')
     }
 
     const onBackdropClick = () => {
-        dispatch('backdropClick');
-    };
+        dispatch('backdropClick')
+    }
 
     const onKeydown = (e) => {
-        dispatch('keydown', e);
-    };
+        dispatch('keydown', e)
+    }
 
     /*
      * Animation
      */
     const fadeParams: FadeParams = {
         duration: 500,
-        easing: linear
-    };
+        easing: linear,
+    }
 
     const scaleIn: ScaleParams = {
         duration: 500,
-        easing: backOut
-    };
+        easing: backOut,
+    }
 
     const scaleOut: ScaleParams = {
         duration: 500,
-        easing: backIn
-    };
+        easing: backIn,
+    }
 </script>
 
-<svelte:window on:keydown={onKeydown}/>
+<svelte:window on:keydown="{onKeydown}" />
 
 {#if showModal}
     <div
         class="modal-backdrop centered-content"
-        transition:fade={fadeParams}
-        on:click={onBackdropClick}
-        on:contextmenu|stopPropagation={() => {}}>
+        transition:fade="{fadeParams}"
+        on:click="{onBackdropClick}"
+        on:contextmenu|stopPropagation="{() => {}}">
         <div
             class="modal-content"
-            in:scale={scaleIn}
-            out:scale={scaleOut}
-            on:click|stopPropagation={() => {}}
-            on:contextmenu|stopPropagation={() => {}}>
+            in:scale="{scaleIn}"
+            out:scale="{scaleOut}"
+            on:click|stopPropagation="{() => {}}"
+            on:contextmenu|stopPropagation="{() => {}}">
             <slot />
         </div>
     </div>
@@ -93,7 +93,7 @@
         border-radius: 4px;
         background: white;
         border: 2px solid black;
-        filter: drop-shadow(4px 4px 4px gray);
+        filter: drop-shadow(4px 4px 4px grey);
         padding: 1em;
         display: flex;
         flex-direction: column;

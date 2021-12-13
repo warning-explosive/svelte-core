@@ -1,21 +1,21 @@
 <script lang="ts">
-    import {createEventDispatcher} from "svelte";
+    import { createEventDispatcher } from 'svelte'
 
-    import {ButtonOptions} from "./buttonOptions.ts";
+    import { ButtonOptions } from './buttonOptions.ts'
 
-    export let options: ButtonOptions;
+    export let options: ButtonOptions
 
-    const dispatch = createEventDispatcher();
+    const dispatch = createEventDispatcher()
 
     const onClick = () => {
         dispatch('click')
-    };
+    }
 </script>
 
 <button
-    disabled={options.disabled}
-    on:click={onClick}
-    on:contextmenu|preventDefault={() => {}}>
+    disabled="{options.disabled}"
+    on:click="{onClick}"
+    on:contextmenu|preventDefault="{() => {}}">
     {#if options.icon}
         {options.icon}
     {/if}
@@ -25,21 +25,29 @@
 </button>
 
 <style>
+    span {
+        color: black;
+    }
+
     button {
-        color: #333;
-        background-color: #f4f4f4;
+        background-color: gray;
         outline: none;
+        border: none;
     }
 
     button:disabled {
-        color: #999;
-    }
-
-    button:not(:disabled):active {
-        background-color: #ddd;
+        background-color: darkgrey;
     }
 
     button:focus {
-        border-color: #666;
+        background-color: dimgrey;
+    }
+
+    button:not(:disabled):active {
+        background-color: royalblue;
+    }
+
+    button:not(:disabled):hover {
+        background-color: dimgrey;
     }
 </style>

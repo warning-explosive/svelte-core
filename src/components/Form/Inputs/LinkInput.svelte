@@ -1,48 +1,48 @@
 <script lang="ts">
-    import {onMount, createEventDispatcher} from "svelte";
-    import {slide} from "svelte/transition";
-    import {linear} from 'svelte/easing';
-    import {SlideParams} from "svelte/types/runtime/transition";
+    import { onMount, createEventDispatcher } from 'svelte'
+    import { slide } from 'svelte/transition'
+    import { linear } from 'svelte/easing'
+    import { SlideParams } from 'svelte/types/runtime/transition'
 
-    import {LinkDataContainer} from "../../../scripts/dataContainers.ts";
-    import {ValidationEventArgs} from "../formValidation.ts";
-    import {FormElementArgs} from "../formLayoutNode.ts";
-    import {FormContextMenuArgs} from "../formContextualMenu.ts";
+    import { LinkDataContainer } from '../../../scripts/dataContainers.ts'
+    import { ValidationEventArgs } from '../formValidation.ts'
+    import { FormElementArgs } from '../formLayoutNode.ts'
+    import { FormContextMenuArgs } from '../formContextualMenu.ts'
 
-    export let args: FormElementArgs<LinkDataContainer>;
+    export let args: FormElementArgs<LinkDataContainer>
 
-    let options: LinkDataContainer[] = [args.container];
+    let options: LinkDataContainer[] = [args.container]
 
-    const dispatch = createEventDispatcher();
+    const dispatch = createEventDispatcher()
 
-    let select: HTMLSelectElement;
-    let errorMessage = '';
+    let select: HTMLSelectElement
+    let errorMessage = ''
     let validationEventArgs: ValidationEventArgs = {
         key: args.key,
-        message: errorMessage
-    };
+        message: errorMessage,
+    }
 
     const validate = (): void => {
-        dispatch('validate', validationEventArgs);
-        errorMessage = validationEventArgs.message ?? '';
-        select.setCustomValidity(errorMessage);
-    };
+        dispatch('validate', validationEventArgs)
+        errorMessage = validationEventArgs.message ?? ''
+        select.setCustomValidity(errorMessage)
+    }
 
     onMount(() => {
-        validate();
+        validate()
 
         if (args.focused) {
-            select.focus();
+            select.focus()
         }
-    });
+    })
 
     const openContextMenu = (event: PointerEvent): void => {
-        const contextMenuArgs:FormContextMenuArgs = {
+        const contextMenuArgs: FormContextMenuArgs = {
             key: args.key,
-            event: event
-        };
+            event: event,
+        }
 
-        dispatch('openContextMenu', contextMenuArgs);
+        dispatch('openContextMenu', contextMenuArgs)
     }
 
     /*
@@ -50,29 +50,26 @@
      */
     const slideParams: SlideParams = {
         duration: 200,
-        easing: linear
-    };
+        easing: linear,
+    }
 </script>
 
-<div on:contextmenu|preventDefault={openContextMenu}>
-    <label class="noselect" for={args.key}>
+<div on:contextmenu|preventDefault="{openContextMenu}">
+    <label class="noselect" for="{args.key}">
         <span>{args.label}</span>
     </label>
     <select
-        id={args.key}
-        disabled={args.disabled}
-        name={args.label}
-        bind:value={args.container.id}
-        bind:this={select}
-        on:change={validate}>
+        id="{args.key}"
+        disabled="{args.disabled}"
+        name="{args.label}"
+        bind:value="{args.container.id}"
+        bind:this="{select}"
+        on:change="{validate}">
         {#each options as option}
-            <option value={option.id}>{option.caption}</option>
+            <option value="{option.id}">{option.caption}</option>
         {/each}
     </select>
     {#if errorMessage}
-        <span class="error" transition:slide={slideParams}>{errorMessage}</span>
+        <span class="error" transition:slide="{slideParams}">{errorMessage}</span>
     {/if}
 </div>
-
-<style>
-</style>

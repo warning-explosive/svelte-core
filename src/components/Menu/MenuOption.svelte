@@ -1,18 +1,26 @@
 <script lang="ts">
-    import { createEventDispatcher } from 'svelte';
+    import { createEventDispatcher } from 'svelte'
 
-    import {MenuOptionArgs} from "./menu.ts";
+    import { MenuOptionArgs } from './menu.ts'
 
-    export let args: MenuOptionArgs;
+    export let args: MenuOptionArgs
 
-    const dispatch = createEventDispatcher();
+    const dispatch = createEventDispatcher()
 
     const click = () => {
         if (!args.disabled) {
-            dispatch('click', args.text);
+            dispatch('click', args.text)
         }
     }
 </script>
+
+<div class:disabled="{args.disabled}" on:click="{click}">
+    {#if args.text}
+        <span class="noselect">{args.text}</span>
+    {:else}
+        <slot />
+    {/if}
+</div>
 
 <style>
     div {
@@ -31,13 +39,3 @@
         background: white;
     }
 </style>
-
-<div
-    class:disabled={args.disabled}
-    on:click={click}>
-    {#if args.text}
-        <span class="noselect">{args.text}</span>
-    {:else}
-        <slot/>
-    {/if}
-</div>

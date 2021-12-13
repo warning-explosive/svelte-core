@@ -2,9 +2,6 @@
 </script>
 
 <div class="centered-content">
-    <div>Page not found</div>
-    <div>{window.location.href}</div>
+    <span>Page not found</span>
+    <span>{window.location.href}</span>
 </div>
-
-<style>
-</style>
