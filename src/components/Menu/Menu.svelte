@@ -5,7 +5,6 @@
     import { FadeParams } from 'svelte/types/runtime/transition'
 
     import { Point } from './menu.ts'
-    import { determineBrowser } from '../../scripts/userAgent.ts'
 
     const dispatch = createEventDispatcher()
 
@@ -16,28 +15,15 @@
         y: 0,
     }
 
-    const getFixedPosition = (event: PointerEvent): Point => {
-        const browser = determineBrowser()
-
-        if (!browser || browser === 'Safari') {
-            return {
-                x: event.clientX,
-                y: event.clientY,
-            }
-        }
-
-        return {
-            x: event.layerX,
-            y: event.layerY,
-        }
-    }
-
     export const openMenu = async (event: PointerEvent): Promise<void> => {
         if (showMenu) {
             await closeMenu()
         }
 
-        position = getFixedPosition(event)
+        position = {
+            x: event.clientX,
+            y: event.clientY,
+        }
 
         showMenu = true
         await new Promise((resolve) => setTimeout(resolve, fadeParams.duration))
@@ -77,19 +63,10 @@
 {#if showMenu}
     <div
         style="top: {position.y}px; left: {position.x}px;"
+        class="fixed flex flex-col bg-white shadow-lg rounded-lg"
         transition:fade="{fadeParams}"
         bind:this="{menu}"
         on:contextmenu|preventDefault="{() => {}}">
         <slot />
     </div>
 {/if}
-
-<style>
-    div {
-        position: fixed;
-        display: grid;
-        border: 1px solid black;
-        box-shadow: 4px 4px 4px 0px grey;
-        background: white;
-    }
-</style>

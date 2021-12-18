@@ -14,40 +14,13 @@
 
 <button
     disabled="{options.disabled}"
+    class="px-4 py-2 bg-gray-100 hover:bg-gray-300 active:bg-gray-400 first:rounded-l-lg last:rounded-r-lg shadow-lg"
     on:click="{onClick}"
     on:contextmenu|preventDefault="{() => {}}">
     {#if options.icon}
         {options.icon}
     {/if}
     {#if options.label}
-        <span class="noselect">{options.label}</span>
+        <span>{options.label}</span>
     {/if}
 </button>
-
-<style>
-    span {
-        color: black;
-    }
-
-    button {
-        background-color: gray;
-        outline: none;
-        border: none;
-    }
-
-    button:disabled {
-        background-color: darkgrey;
-    }
-
-    button:focus {
-        background-color: dimgrey;
-    }
-
-    button:not(:disabled):active {
-        background-color: royalblue;
-    }
-
-    button:not(:disabled):hover {
-        background-color: dimgrey;
-    }
-</style>

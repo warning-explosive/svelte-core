@@ -21,6 +21,12 @@
     const direction = (node as FormLayoutNode).direction
     const children = (node as FormLayoutNode).children
     const isLayout = !!direction && !!children
+    const layout =
+        direction && direction === 'vertical'
+            ? 'flex flex-col'
+            : direction && direction === 'horizontal'
+            ? 'flex flex-row'
+            : ''
 
     const key = (node as FormElementNode).key
     const disabled = (node as FormElementNode).disabled
@@ -40,7 +46,7 @@
     }
 </script>
 
-<div class="{isLayout ? `${direction} layout` : ''}">
+<div class="{layout}">
     {#if isLayout}
         {#each children as child}
             <svelte:self node="{child}" bind:entity on:validate on:openContextMenu />
@@ -63,21 +69,3 @@
         <div>Unknown container: {args.container.kind}</div>
     {/if}
 </div>
-
-<style>
-    .layout {
-        margin: 4px;
-        padding: 4px;
-
-        display: flex;
-        justify-content: flex-start;
-    }
-
-    .horizontal {
-        flex-direction: row;
-    }
-
-    .vertical {
-        flex-direction: column;
-    }
-</style>

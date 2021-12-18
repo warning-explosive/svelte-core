@@ -61,12 +61,12 @@
 
 {#if showModal}
     <div
-        class="modal-backdrop centered-content"
+        class="fixed z-9999 inset-0 flex flex-col justify-center items-center bg-transparent backdrop-blur-sm"
         transition:fade="{fadeParams}"
         on:click="{onBackdropClick}"
         on:contextmenu|stopPropagation="{() => {}}">
         <div
-            class="modal-content"
+            class="p-4 flex flex-col bg-white rounded-lg shadow-lg"
             in:scale="{scaleIn}"
             out:scale="{scaleOut}"
             on:click|stopPropagation="{() => {}}"
@@ -75,27 +75,3 @@
         </div>
     </div>
 {/if}
-
-<style>
-    .modal-backdrop {
-        visibility: visible;
-        z-index: 9999;
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: transparent;
-        -webkit-backdrop-filter: blur(4px);
-        backdrop-filter: blur(4px);
-    }
-    .modal-content {
-        border-radius: 4px;
-        background: white;
-        border: 2px solid black;
-        filter: drop-shadow(4px 4px 4px grey);
-        padding: 1em;
-        display: flex;
-        flex-direction: column;
-    }
-</style>

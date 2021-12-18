@@ -206,7 +206,7 @@
     <MenuDivider />
     <MenuOption args="{{ text: 'disabled action', disabled: true }}" />
 </Menu>
-<ButtonGroup options="{{ direction: 'horizontal' }}">
+<ButtonGroup>
     <Button
         options="{{
             label: $store.state === 'loading' ? 'Loading...' : 'Refresh',
@@ -224,34 +224,36 @@
     <span>Error: {$store.data}</span>
 {:else if $store.state === 'idling'}
     <table>
-        <tr class="header">
-            {#each $store.keys as key, index (key)}
-                <th
-                    class="noselect"
-                    class:dndHover="{dndHoveredKey === key}"
-                    animate:flip="{columnsFlipParams}"
-                    draggable="{true}"
-                    on:dragstart="{(e) => onDragStart(key, index, e)}"
-                    on:dragover|preventDefault="{onDragOver}"
-                    on:drop="{(e) => onDrop(key, index, e)}"
-                    on:dragenter="{() => onDragEnter(key)}"
-                    on:dragleave="{onDragLeave}">
-                    {getDisplayValue(getHeaderContainer(key))}
-                </th>
-            {/each}
-        </tr>
+        <thead>
+            <tr class="bg-gray-200">
+                {#each $store.keys as key, index (key)}
+                    <th
+                        class="hover:bg-gray-300"
+                        animate:flip="{columnsFlipParams}"
+                        draggable="{true}"
+                        on:dragstart="{(e) => onDragStart(key, index, e)}"
+                        on:dragover|preventDefault="{onDragOver}"
+                        on:drop="{(e) => onDrop(key, index, e)}"
+                        on:dragenter="{() => onDragEnter(key)}"
+                        on:dragleave="{onDragLeave}">
+                        {getDisplayValue(getHeaderContainer(key))}
+                    </th>
+                {/each}
+            </tr>
+        </thead>
         <tbody>
             {#each $store.data as entity (entity.id.value)}
                 <tr
-                    class:selected="{isSelected(entity, selected)}"
-                    class="odd:bg-white even:bg-gray-100 hover:bg-gray-200"
+                    class="{isSelected(entity, selected)
+                        ? 'bg-slate-300 hover:bg-slate-400'
+                        : 'odd:bg-white even:bg-gray-100 hover:bg-gray-300'}"
                     in:slide="{rowSlideInParams}"
                     out:slide="{rowSlideOutParams}"
                     on:click="{(e) => select(entity, e)}"
                     on:dblclick="{() => openForm(entity)}"
                     on:contextmenu|preventDefault="{(e) => openContextMenu(entity, e)}">
                     {#each $store.keys as key, index (key)}
-                        <td class="noselect" animate:flip="{columnsFlipParams}">
+                        <td animate:flip="{columnsFlipParams}">
                             {getDisplayValue(entity[key])}
                         </td>
                     {/each}
@@ -260,29 +262,3 @@
         </tbody>
     </table>
 {/if}
-
-<style>
-    table {
-        border-collapse: collapse;
-    }
-
-    tr.selected {
-        background-color: cornflowerblue;
-    }
-
-    tr:hover:not(.header) {
-        background-color: darkgrey;
-    }
-
-    tr.selected:hover:not(.header) {
-        background-color: royalblue;
-    }
-
-    th[draggable] {
-        cursor: grab;
-    }
-
-    .dndHover {
-        background-color: darkgrey;
-    }
-</style>

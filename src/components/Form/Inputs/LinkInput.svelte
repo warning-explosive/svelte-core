@@ -54,8 +54,8 @@
     }
 </script>
 
-<div on:contextmenu|preventDefault="{openContextMenu}">
-    <label class="noselect" for="{args.key}">
+<div class="m-2" on:contextmenu|preventDefault="{openContextMenu}">
+    <label for="{args.key}">
         <span>{args.label}</span>
     </label>
     <select

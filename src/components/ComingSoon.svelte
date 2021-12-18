@@ -2,6 +2,8 @@
     export let name: string
 </script>
 
-<section class="centered-content">
-    <h1 class="py-8 px-4 border border-indigo-900 shadow-lg">{name} is coming soon!</h1>
-</section>
+<div class="flex flex-col justify-center items-center h-full w-full">
+    <div class="p-4 flex flex-col items-center shadow-lg rounded-lg">
+        <h1 class="">{name} is coming soon!</h1>
+    </div>
+</div>

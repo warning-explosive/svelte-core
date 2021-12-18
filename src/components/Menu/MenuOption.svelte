@@ -14,28 +14,13 @@
     }
 </script>
 
-<div class:disabled="{args.disabled}" on:click="{click}">
+<div
+    class:disabled="{args.disabled}"
+    class="p-1 first:rounded-t-lg last:rounded-b-lg hover:bg-gray-300 active:bg-gray-400 disabled:bg-gray-100"
+    on:click="{click}">
     {#if args.text}
-        <span class="noselect">{args.text}</span>
+        <span class="select-none">{args.text}</span>
     {:else}
         <slot />
     {/if}
 </div>
-
-<style>
-    div {
-        padding: 4px 16px;
-        display: flex;
-        align-items: center;
-        grid-gap: 4px;
-    }
-    div:hover {
-        background: darkgrey;
-    }
-    div.disabled {
-        color: darkgrey;
-    }
-    div.disabled:hover {
-        background: white;
-    }
-</style>

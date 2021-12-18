@@ -15,22 +15,17 @@
         direction: 'horizontal',
         children: [
             {
-                direction: 'horizontal',
+                direction: 'vertical',
                 children: [
-                    {
-                        direction: 'vertical',
-                        children: [
-                            { key: 'id', disabled: true },
-                            { key: 'userId', disabled: false },
-                        ],
-                    },
-                    {
-                        direction: 'vertical',
-                        children: [
-                            { key: 'title', disabled: false },
-                            { key: 'body', disabled: false },
-                        ],
-                    },
+                    { key: 'id', disabled: true },
+                    { key: 'userId', disabled: false },
+                ],
+            },
+            {
+                direction: 'vertical',
+                children: [
+                    { key: 'title', disabled: false },
+                    { key: 'body', disabled: false },
                 ],
             },
         ],
@@ -69,7 +64,7 @@
             <b>Welcome to svelte-form!</b>
         </div>
         <Form bind:entity layout="{layout}" bind:isValidForm />
-        <ButtonGroup options="{{ direction: 'horizontal' }}">
+        <ButtonGroup>
             <Button options="{{ label: 'Close' }}" on:click="{closeForm}" />
             <Button
                 options="{{ label: 'Submit', disabled: !isValidForm }}"

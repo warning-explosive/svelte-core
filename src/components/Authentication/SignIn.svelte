@@ -1,16 +1,16 @@
 <script lang="ts">
-    import page from "page";
-    import Form from "../Form/Form.svelte";
-    import validator from 'validator';
+    import page from 'page'
+    import Form from '../Form/Form.svelte'
+    import validator from 'validator'
 
-    import {createEntity} from "../../scripts/dataContainers.ts";
-    import {ChildFormLayoutNode} from "../Form/formLayoutNode.ts";
-    import {Pages} from "../../pages.ts";
+    import { createEntity } from '../../scripts/dataContainers.ts'
+    import { ChildFormLayoutNode } from '../Form/formLayoutNode.ts'
+    import { Pages } from '../../pages.ts'
 
-    import ButtonGroup from "../Form/Controls/ButtonGroup.svelte";
-    import Button from "../Form/Controls/Button.svelte";
+    import ButtonGroup from '../Form/Controls/ButtonGroup.svelte'
+    import Button from '../Form/Controls/Button.svelte'
 
-    let isValidSignInForm: boolean;
+    let isValidSignInForm: boolean
 
     let entity = createEntity({
         login: {
@@ -30,8 +30,8 @@
                     ? ''
                     : 'Required';
             }*/
-        }
-    });
+        },
+    })
 
     const layout: ChildFormLayoutNode = {
         direction: 'vertical',
@@ -39,37 +39,33 @@
             {
                 key: 'login',
                 disabled: false,
-                focused: true
+                focused: true,
             },
             {
                 key: 'password',
-                disabled: false
-            }
-        ]
+                disabled: false,
+            },
+        ],
     }
 
     const signIn = () => {
         // TODO: authenticate user on the server
-        page(Pages.Main);
-    };
+        page(Pages.Main)
+    }
 
     const signUp = () => {
-        page(Pages.SignUp);
-    };
+        page(Pages.SignUp)
+    }
 </script>
 
-<section class="centered-content">
-    <div>
-        <Form bind:entity={entity} {layout} bind:isValidForm={isValidSignInForm}/>
-        <ButtonGroup options={{direction: 'horizontal'}}>
-            <Button options={{label: 'Sign in', disabled: !isValidSignInForm}} on:click={signIn}/>
-            <Button options={{label: 'Sign up'}} on:click={signUp}/>
+<div class="flex flex-col justify-center items-center h-full w-full">
+    <div class="p-4 flex flex-col items-center shadow-lg rounded-lg">
+        <Form bind:entity layout="{layout}" bind:isValidForm="{isValidSignInForm}" />
+        <ButtonGroup>
+            <Button
+                options="{{ label: 'Sign in', disabled: !isValidSignInForm }}"
+                on:click="{signIn}" />
+            <Button options="{{ label: 'Sign up' }}" on:click="{signUp}" />
         </ButtonGroup>
     </div>
-</section>
-
-<style>
-    div {
-        width: 300px;
-    }
-</style>
+</div>
