@@ -1,8 +1,8 @@
 <script lang="ts">
-    import { createEventDispatcher } from 'svelte'
+    import { createEventDispatcher, onMount } from 'svelte'
     import { linear, backIn, backOut } from 'svelte/easing'
-    import { fade, scale, ScaleParams } from 'svelte/transition'
-    import type { FadeParams } from 'svelte/types/runtime/transition'
+    import { fade, scale, fly, ScaleParams, FlyParams } from 'svelte/transition'
+    import type { FadeParams, TransitionConfig } from 'svelte/types/runtime/transition'
 
     const dispatch = createEventDispatcher()
 
@@ -55,20 +55,48 @@
         duration: 500,
         easing: backIn,
     }
+
+    const flyIn: FlyParams = {
+        duration: 1000,
+        easing: linear,
+        opacity: 1,
+        y: 500,
+    }
+
+    const flyOut: FlyParams = {
+        duration: 1000,
+        easing: linear,
+        opacity: 1,
+        y: 500,
+    }
+
+    let mobile = false
+
+    const checkSize = () => {
+        mobile = !window.matchMedia('(min-width: 1024px)').matches
+    }
+
+    const transitionInFunc = (node: Element): TransitionConfig => {
+        return mobile ? fly(node, flyIn) : scale(node, scaleIn)
+    }
+
+    const transitionOutFunc = (node: Element): TransitionConfig => {
+        return mobile ? fly(node, flyOut) : scale(node, scaleOut)
+    }
 </script>
 
-<svelte:window on:keydown="{onKeydown}" />
+<svelte:window on:keydown="{onKeydown}" on:resize="{checkSize}" />
 
 {#if showModal}
     <div
-        class="fixed z-9999 inset-0 flex flex-col justify-center items-center bg-transparent backdrop-blur-sm"
+        class="fixed z-9999 inset-0 flex flex-col bg-transparent backdrop-blur-sm justify-end lg:justify-center lg:items-center"
         transition:fade="{fadeParams}"
         on:click="{onBackdropClick}"
         on:contextmenu|stopPropagation="{() => {}}">
         <div
-            class="p-4 flex flex-col bg-white rounded-lg shadow-lg"
-            in:scale="{scaleIn}"
-            out:scale="{scaleOut}"
+            class="p-4 flex flex-col bg-white overflow-hidden rounded-t-lg mt-4 lg:m-0 lg:rounded-lg lg:shadow-lg"
+            in:transitionInFunc
+            out:transitionOutFunc
             on:click|stopPropagation="{() => {}}"
             on:contextmenu|stopPropagation="{() => {}}">
             <slot />
