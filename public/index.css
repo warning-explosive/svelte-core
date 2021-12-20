@@ -450,6 +450,10 @@ Ensure the default browser behavior of the `hidden` attribute.
 .m-2 {
   margin: 0.5rem;
 }
+.mx-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
 .flex {
   display: flex;
 }
@@ -485,6 +489,14 @@ Ensure the default browser behavior of the `hidden` attribute.
 }
 .rounded-lg {
   border-radius: 0.5rem;
+}
+.rounded-t-lg {
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+}
+.rounded-b-lg {
+  border-bottom-right-radius: 0.5rem;
+  border-bottom-left-radius: 0.5rem;
 }
 .border-gray-300 {
   --tw-border-opacity: 1;
@@ -544,12 +556,24 @@ Ensure the default browser behavior of the `hidden` attribute.
   border-top-left-radius: 0.5rem;
   border-bottom-left-radius: 0.5rem;
 }
+.first\:rounded-tl-lg:first-child {
+  border-top-left-radius: 0.5rem;
+}
+.first\:rounded-bl-lg:first-child {
+  border-bottom-left-radius: 0.5rem;
+}
 .last\:rounded-b-lg:last-child {
   border-bottom-right-radius: 0.5rem;
   border-bottom-left-radius: 0.5rem;
 }
 .last\:rounded-r-lg:last-child {
   border-top-right-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+}
+.last\:rounded-tr-lg:last-child {
+  border-top-right-radius: 0.5rem;
+}
+.last\:rounded-br-lg:last-child {
   border-bottom-right-radius: 0.5rem;
 }
 .odd\:bg-white:nth-child(odd) {

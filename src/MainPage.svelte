@@ -72,4 +72,6 @@
         </ButtonGroup>
     {/if}
 </Modal>
-<DataGrid url="{'https://jsonplaceholder.typicode.com/posts'}" on:openForm="{openForm}" />
+<div class="container mx-auto">
+    <DataGrid url="{'https://jsonplaceholder.typicode.com/posts'}" on:openForm="{openForm}" />
+</div>

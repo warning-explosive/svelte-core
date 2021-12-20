@@ -66,6 +66,7 @@
      */
     const openForm = (entity: Entity): void => {
         dispatch('openForm', entity)
+        closeContextMenu()
     }
 
     /*
@@ -155,11 +156,14 @@
     /*
      * Context menu
      */
+    let contextMenuEntity: Entity | undefined
     let openMenu: (event: PointerEvent) => Promise<void>
     let closeMenu: () => Promise<void>
 
     const openContextMenu = async (entity: Entity, event: PointerEvent): Promise<void> => {
-        await closeMenu()
+        await closeContextMenu()
+
+        contextMenuEntity = entity
 
         if (!selected.includes(entity.id.value)) {
             selected = [entity.id.value]
@@ -168,9 +172,14 @@
         await openMenu(event)
     }
 
+    const closeContextMenu = async (): Promise<void> => {
+        await closeMenu()
+        contextMenuEntity = undefined
+    }
+
     const contextualDeleteSelected = () => {
         deleteSelected()
-        closeMenu()
+        closeContextMenu()
     }
 
     const contextualDeleteSelectedArgs = (selected: string[]) => {
@@ -201,10 +210,16 @@
 
 <Menu bind:openMenu bind:closeMenu>
     <MenuOption
+        args="{{ text: 'open', disabled: false }}"
+        on:click="{() => openForm(contextMenuEntity)}" />
+    <MenuDivider />
+    <MenuOption
         args="{contextualDeleteSelectedArgs(selected)}"
         on:click="{contextualDeleteSelected}" />
     <MenuDivider />
-    <MenuOption args="{{ text: 'disabled action', disabled: true }}" />
+    <MenuOption
+        args="{{ text: 'disabled action', disabled: true }}"
+        on:click="{closeContextMenu}" />
 </Menu>
 <ButtonGroup>
     <Button
@@ -223,12 +238,12 @@
 {#if $store.state === 'error'}
     <span>Error: {$store.data}</span>
 {:else if $store.state === 'idling'}
-    <table>
-        <thead>
-            <tr class="bg-gray-200">
+    <table class="rounded-lg">
+        <thead class="rounded-t-lg">
+            <tr class="rounded-t-lg bg-gray-200">
                 {#each $store.keys as key, index (key)}
                     <th
-                        class="hover:bg-gray-300"
+                        class="first:rounded-tl-lg last:rounded-tr-lg hover:bg-gray-300"
                         animate:flip="{columnsFlipParams}"
                         draggable="{true}"
                         on:dragstart="{(e) => onDragStart(key, index, e)}"
@@ -241,10 +256,10 @@
                 {/each}
             </tr>
         </thead>
-        <tbody>
-            {#each $store.data as entity (entity.id.value)}
+        <tbody class="rounded-b-lg">
+            {#each $store.data as entity, rowIndex (entity.id.value)}
                 <tr
-                    class="{isSelected(entity, selected)
+                    class="last:rounded-b-lg {isSelected(entity, selected)
                         ? 'bg-slate-300 hover:bg-slate-400'
                         : 'odd:bg-white even:bg-gray-100 hover:bg-gray-300'}"
                     in:slide="{rowSlideInParams}"
@@ -253,7 +268,11 @@
                     on:dblclick="{() => openForm(entity)}"
                     on:contextmenu|preventDefault="{(e) => openContextMenu(entity, e)}">
                     {#each $store.keys as key, index (key)}
-                        <td animate:flip="{columnsFlipParams}">
+                        <td
+                            class="{$store.data.length === rowIndex + 1
+                                ? 'first:rounded-bl-lg last:rounded-br-lg'
+                                : ''}"
+                            animate:flip="{columnsFlipParams}">
                             {getDisplayValue(entity[key])}
                         </td>
                     {/each}
